@@ -1,0 +1,12 @@
+<div class="home-container">
+    <h2>Cargar Archivo CSV</h2>
+    <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+    <button (click)="onUpload()">Cargar y Procesar</button>
+  
+    <p>{{ mensaje }}</p>
+  
+    <div *ngIf="imagenUrl" class="imagen-container">
+      <img [src]="imagenUrl" alt="Visualización generada" />
+    </div>
+  </div>
+  
