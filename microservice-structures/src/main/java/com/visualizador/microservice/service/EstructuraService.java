@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,14 +17,15 @@ public class EstructuraService {
     private final PilaService pila;
     private final ColaService cola;
 
-    public String procesarCSV(MultipartFile file) throws Exception {
+    public List<String> procesarCSV(MultipartFile file) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String linea;
         boolean skip = true;
-        String pathFinal = null;
+        List<String> imagenes = new ArrayList<>();
 
         while ((linea = reader.readLine()) != null) {
             if (skip) { skip = false; continue; }
+
             String[] partes = linea.split(",");
             if (partes.length < 2) continue;
 
@@ -44,14 +47,13 @@ public class EstructuraService {
                     else cola.eliminar();
                     path = GraphvizUtil.generarImagen(cola.generarDot(), "cola");
                     break;
-
-                default:
-                    throw new IllegalArgumentException("Estructura no permitida: " + estructura);
             }
 
-            pathFinal = path;
+            if (path != null) {
+                imagenes.add(path);
+            }
         }
 
-        return pathFinal;
+        return imagenes;
     }
 }

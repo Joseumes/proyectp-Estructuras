@@ -1,12 +1,14 @@
-<div class="home-container">
-    <h2>Cargar Archivo CSV</h2>
-    <input type="file" (change)="onFileSelected($event)" accept=".csv" />
-    <button (click)="onUpload()">Cargar y Procesar</button>
-  
-    <p>{{ mensaje }}</p>
-  
-    <div *ngIf="imagenUrl" class="imagen-container">
-      <img [src]="imagenUrl" alt="Visualización generada" />
+<div class="container">
+  <h2>Cargar archivo CSV de estructuras</h2>
+
+  <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+  <button (click)="onUpload()">Procesar CSV</button>
+
+  <p>{{ mensaje }}</p>
+
+  <div class="imagenes-grid" *ngIf="imagenes.length > 0">
+    <div class="imagen-card" *ngFor="let img of imagenes">
+      <img [src]="img" alt="Estructura generada" />
     </div>
   </div>
-  
+</div>
