@@ -11,7 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class HomeComponent {
   selectedFile: File | null = null;
-  imagenes: string[] = [];
+  imagenes: { src: string, tipo: string }[] = [];
   mensaje: string = '';
 
   constructor(private http: HttpClient) {}
@@ -22,8 +22,9 @@ export class HomeComponent {
 
   onUpload() {
     if (!this.selectedFile) return;
-    this.imagenes = []; // limpia las imágenes anteriores
-    this.mensaje = 'hola'; // limpia el mensaje anterior
+
+    this.imagenes = [];
+    this.mensaje = '';
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
@@ -31,8 +32,16 @@ export class HomeComponent {
     this.http.post<string[]>('http://localhost:8081/api/estructuras/procesar', formData)
       .subscribe({
         next: (rutas) => {
-          this.imagenes = rutas.map(r => 'http://localhost:8081/' + r);
-          this.mensaje = 'Visualización generada';
+          this.mensaje = 'Visualización generada correctamente.';
+
+          // 💡 Extrae tipo desde la ruta: imagenes/pila_xxx.png
+          this.imagenes = rutas.map(ruta => {
+            const tipo = ruta.split('/')[1].split('_')[0]; // pila, cola, etc.
+            return {
+              src: 'http://localhost:8081/' + ruta,
+              tipo
+            };
+          });
         },
         error: (error) => {
           this.mensaje = 'Error al procesar: ' + (error.error || 'Error desconocido');

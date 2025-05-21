@@ -16,6 +16,9 @@ public class EstructuraService {
 
     private final PilaService pila;
     private final ColaService cola;
+    private final ListaService lista = new ListaService();
+    private final ArregloService arreglo = new ArregloService();
+
 
     public List<String> procesarCSV(MultipartFile file) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
@@ -47,6 +50,17 @@ public class EstructuraService {
                     else cola.eliminar();
                     path = GraphvizUtil.generarImagen(cola.generarDot(), "cola");
                     break;
+                case "lista":
+                    if ("insertar".equals(operacion)) lista.insertar(valor);
+                    else lista.eliminar();
+                    path = GraphvizUtil.generarImagen(lista.generarDot(), "lista");
+                    break;
+                case "arreglo":
+                    if ("insertar".equals(operacion)) arreglo.insertar(valor);
+                    else arreglo.eliminar();
+                    path = GraphvizUtil.generarImagen(arreglo.generarDot(), "arreglo");
+                    break;
+
             }
 
             if (path != null) {

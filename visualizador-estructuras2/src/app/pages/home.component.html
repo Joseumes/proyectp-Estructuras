@@ -8,7 +8,8 @@
 
   <div class="imagenes-grid" *ngIf="imagenes.length > 0">
     <div class="imagen-card" *ngFor="let img of imagenes">
-      <img [src]="img" alt="Estructura generada" />
+      <img [src]="img.src" alt="Imagen generada" />
+      <p class="etiqueta">{{ img.tipo | uppercase }}</p>
     </div>
   </div>
 </div>
